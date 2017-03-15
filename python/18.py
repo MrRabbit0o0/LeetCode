@@ -5,6 +5,7 @@ class Solution(object):
         :type target: int
         :rtype: List[List[int]]
         """
+        nums.sort()
         return Solution.__n_sum(nums, target, self.__three_sum)
 
     def __three_sum(self, nums, target):
@@ -37,11 +38,10 @@ class Solution(object):
     def __n_sum(nums, target, sub_sum_function):
         ret = []
         remove_duplicate = list(set(nums))
-        nums.sort()
         remove_duplicate.sort()
         for searched_key in remove_duplicate:
-            target_list = nums[nums.index(searched_key):]
-            target_list.remove(searched_key)
+            key_index = nums.index(searched_key)
+            target_list = nums[key_index+1:] if key_index < len(nums) else nums[key_index:]
 
             sub_sum_list = sub_sum_function(target_list[:], target - searched_key)
 
