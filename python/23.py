@@ -22,7 +22,7 @@ class Solution(object):
             ret = ListNode(None)
             pointer = ret
             while list_a and list_b:
-                if list_a.val < list_b.val :
+                if list_a.val < list_b.val:
                     pointer.next = list_a
                     list_a = list_a.next
                 else:
