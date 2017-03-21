@@ -11,7 +11,7 @@ class Solution(object):
         if needle:
             for index, char in enumerate(haystack):
                 while q > 0 and needle[q] != char:
-                    q = prefix_function[q]
+                    q = prefix_function[q-1]
                 if char == needle[q]:
                     q += 1
                 if q == m:
@@ -27,7 +27,7 @@ class Solution(object):
             prefix_func.append(q)
             for index, char in enumerate(pattern[1:], 1):
                 while q > 0 and char != pattern[q]:
-                    q = prefix_func[q]
+                    q = prefix_func[q-1]
                 if char == pattern[q]:
                     q += 1
                 prefix_func.append(q)
@@ -35,4 +35,4 @@ class Solution(object):
 
 
 s = Solution()
-print s.strStr("mississippi", "issip")
+print s.strStr("bbaa","aab")
