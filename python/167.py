@@ -5,24 +5,14 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-        value_to_index = {}
-        for index, value in enumerate(numbers):
-            search = target - value
-            if search in value_to_index:
-                return [value_to_index[search] + 1, index + 1]
+        lo = 0
+        hi = len(numbers) - 1
+        while numbers[lo] + numbers[hi] != target:
+            if numbers[lo] + numbers[hi] < target:
+                lo += 1
             else:
-                lo = index + 1
-                hi = len(numbers) - 1
-                while lo < hi:
-                    mid = (lo + hi) / 2
-                    if numbers[mid] < search:
-                        lo = mid + 1
-                    else:
-                        hi = mid - 1
-                if lo != len(numbers) and numbers[lo] == search:
-                    return [index + 1, lo + 1]
-                else:
-                    value_to_index[value] = index
+                hi -= 1
+        return [lo + 1, hi + 1]
 
 
 s = Solution()
