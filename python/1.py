@@ -5,22 +5,14 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-        hash = {}
-        for i in range(len(nums)):
-            key = nums[i]
-            if key in hash:
-                hash[key] = hash[key]+(i,)
+        value_to_index = {}
+        for index, value in enumerate(nums):
+            search = target - value
+            if search in value_to_index:
+                return [value_to_index[search], index]
             else:
-                hash[key] = (i,)
+                value_to_index[value] = index
 
-        for k1, v1 in hash.items():
-            k2 = target-k1
-            if k2 in hash:
-                if k2 != k1:
-                    return [v1[0], hash[k2][0]]
-                else:
-                    if len(hash[k1]) == 2:
-                        return [v1[0], v1[1]]
 
 p = Solution()
-print p.twoSum([3,2,4],6)
+print p.twoSum([3, 2, 4], 6)
