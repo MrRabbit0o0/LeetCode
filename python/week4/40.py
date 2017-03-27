@@ -1,6 +1,3 @@
-import bisect
-
-
 class Solution(object):
     def combinationSum2(self, candidates, target):
         """
@@ -9,27 +6,25 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         candidates.sort()
-        return self.__find_sum(candidates, target)
-
-    def __find_sum(self, candidates, target):
         ret = []
-        if candidates and target >= candidates[0]:
-            length = len(candidates)
-            target_index = bisect.bisect_left(candidates, target, 0, length)
-            if target_index != length and candidates[target_index] == target:
-                ret.append([target])
-
-            if length > 1:
-                pre_item = None
-                for index, item in enumerate(candidates[:length - 1]):
-                    if item != pre_item:
-                        pre_item = item
-                        sums = self.__find_sum(candidates[index + 1:], target - item)
-                        if sums:
-                            for one_sum in sums:
-                                one_sum.append(item)
-                            ret.extend(sums)
+        temp = []
+        self.__find_sum(candidates, target, ret, temp)
         return ret
+
+    def __find_sum(self, candidates, target, result, temp):
+        if target < 0:
+            return
+        elif target == 0:
+            result.append(temp[:])
+        else:
+            if candidates and target >= candidates[0]:
+                for index, value in enumerate(candidates):
+                    if index > 0 and candidates[index] == candidates[index - 1]:
+                        continue
+                    else:
+                        temp.append(value)
+                        self.__find_sum(candidates[index + 1:], target - value, result, temp)
+                        temp.pop()
 
 
 s = Solution()
