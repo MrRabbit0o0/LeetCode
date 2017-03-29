@@ -4,20 +4,14 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        ret = []
-        self.__generate_nums(set(nums), [], len(nums), ret)
+        ret = [[]]
+        for num in nums:
+            temp = []
+            for answer in ret:
+                for i in xrange(len(answer) + 1):
+                    temp.append(answer[:i] + [num] + answer[i:])
+            ret = temp
         return ret
-
-    def __generate_nums(self, nums, temp, length, ret):
-        if len(temp) == length:
-            ret.append(temp[:])
-        else:
-            for value in set(nums):
-                temp.append(value)
-                nums.remove(value)
-                self.__generate_nums(nums, temp, length, ret)
-                temp.pop()
-                nums.add(value)
 
 
 s = Solution()
