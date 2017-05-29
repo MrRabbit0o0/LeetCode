@@ -1,3 +1,5 @@
+# coding: utf8
+
 class Solution(object):
     def addOperators(self, num, target):
         """
@@ -5,36 +7,46 @@ class Solution(object):
         :type target: int
         :rtype: List[str]
         """
-        if not num:
-            return []
-        else:
-            rst = []
-            self.__compute(num, target, rst, "", 0, 0, 0)
-            return rst
-
-    def __compute(self, num_str, target, matches, sequence_so_far, position, computed_value, multiple_value):
-        if position == len(num_str):
-            if target == computed_value:
-                matches.append(sequence_so_far)
-        else:
-            for index, value in enumerate(num_str[position:], position):
-                if index != position and num_str[position] == '0':
-                    break
+        result = []
+        def dfs(sub_num, pre, oprand, op, cum):
+            if sub_num == '' and cum == target:
+                result.append(pre)
+                return
+            for i in range(len(sub_num)):
+                num_a = sub_num[:i+1]
+                if num_a != str(int(num_a)):
+                    continue
+                a = int(num_a)
+                # +
+                dfs(sub_num[i+1:], pre + '+' + num_a, a, '+', cum + a)
+                # -
+                dfs(sub_num[i+1:], pre + '-' + num_a, a, '-', cum - a)
+                # *
+                if op == '+':
+                    dfs(sub_num[i+1:], pre + '*' + num_a, a * oprand, op, cum - oprand  + oprand * a)
+                elif op == '-':
+                    dfs(sub_num[i+1:], pre + '*' + num_a, a * oprand, op, cum + oprand - oprand * a)
                 else:
-                    cur_num_str = num_str[position:index + 1]
-                    cur_num = long(cur_num_str)
-                    if position == 0:
-                        self.__compute(num_str, target, matches, sequence_so_far + cur_num_str, index + 1, cur_num,
-                                       cur_num)
-                    else:
-                        self.__compute(num_str, target, matches, sequence_so_far + '+' + cur_num_str, index + 1,
-                                       computed_value + cur_num, cur_num)
-                        self.__compute(num_str, target, matches, sequence_so_far + '-' + cur_num_str, index + 1,
-                                       computed_value - cur_num, -cur_num)
-                        self.__compute(num_str, target, matches, sequence_so_far + '*' + cur_num_str, index + 1,
-                                       computed_value - multiple_value + multiple_value * cur_num,
-                                       cur_num * multiple_value)
+                    dfs(sub_num[i+1:], pre + '*' + num_a, a * oprand, op, a * oprand)
+
+        if not num:
+            return result
+        for i in range(len(num)):
+            s = num[:i+1]
+            if s != str(int(s)):
+                continue
+            dfs(num[i+1:], s, int(s), '#', int(s))
+        return result
 
 
-s = Solution()
-actual = s.addOperators("123456789", 45)
+if __name__ == '__main__':
+    num = '123456789'
+    target = 45
+    print num, target
+    for r in Solution().addOperators(num, target):
+        print r
+
+    num = '105'
+    target = 5
+    print num, target
+    for r in Solution().addOperators(num, target):
