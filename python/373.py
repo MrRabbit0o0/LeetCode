@@ -10,22 +10,19 @@ class Solution(object):
         :type k: int
         :rtype: List[List[int]]
         """
-        if k < 0 or not nums1 or not nums2:
-            return []
+        heap = []
+        for n1 in nums1:
+            for n2 in nums2:
+                if len(heap) < k:
+                    heapq.heappush(heap, (-n1-n2, [n1, n2]))
+                else:
+                    if heap and -heap[0][0] > n1+n2:
+                        heapq.heappop(heap)
+                        heapq.heappush(heap, (-n1-n2, [n1, n2]))
+                    else:
+                        break
+        return [heapq.heappop(heap)[1] for _ in range(k) if heap]
 
-        cand = []
-        def push(i, j):
-            if i < len(nums1) and j < len(nums2):
-                heapq.heappush(cand, (nums1[i] + nums2[j], i, j))
-        push(0, 0)
-        ret = []
-        while cand and len(ret) < k:
-            _, i, j = heapq.heappop(cand)
-            ret.append((nums1[i], nums2[j]))
-            push(i, j + 1)
-            if j == 0:
-                push(i+1, 0)
-        return ret
 
 
 if __name__ == '__main__':
