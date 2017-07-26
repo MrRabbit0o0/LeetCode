@@ -1,48 +1,34 @@
 # coding: utf8
 
-import random import collection
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 
-class RandomizedCollection(object):
-    def __init__(self):
+class Solution(object):
+    def __init__(self, head):
         """
-        Initialize your data structure here.
+        @param head The linked list's head.
+        Note that the head is guaranteed to be not null, so it contains at least one node.
+        :type head: ListNode
         """
-        self.val_list = []
-        self.random_map = collection.defaultdict(set)
-
-    def insert(self, val):
-        """
-        Inserts a value to the set. Returns true if the set did not already contain the specified element.
-        :type val: int
-        :rtype: bool
-        """
-        self.random_map[val].add(len(self.val_list))
-        self.val_list.append(val)
-        return len(self.random_map[val]) == 1
-
-    def remove(self, val):
-        """
-        Removes a value from the set. Returns true if the set contained the specified element.
-        :type val: int
-        :rtype: bool
-        """
-        if self.random_map[val]:
-            idx = self.random_map[val].pop()
-            new_val = self.val_list[-1]
-            if idx != len(self.val_list) - 1:
-                self.val_list[idx] = new_val
-                self.random_map[new_val].discard(len(self.val_list)-1)
-                self.random_map[new_val].add(idx)
-            self.val_list.pop(-1)
-            return True
-        else:
-            return False
+        self.head = head
+        self.length = 0
+        while head:
+            self.length += 1
+            head = head.next
 
     def getRandom(self):
         """
-        Get a random element from the set.
+        Returns a random node's value.
         :rtype: int
         """
-        return random.choice(self.val_list)
+        node = self.head
+        idx = random.randint(1, self.length)
+        while idx > 1:
+            node = node.next
+            idx -= 1
+        return node.val
 
 
