@@ -1,7 +1,6 @@
 # coding: utf8
 
 import collections
-import re
 
 class Solution(object):
     def longestSubstring(self, s, k):
